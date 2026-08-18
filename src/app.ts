@@ -1,6 +1,6 @@
 import Fastify from "fastify";
-import { globalErrorHandler } from "./infra/http/global-error-handler";
+import { errorHandler } from "./errors/error-handler";
 
 export const app = Fastify();
 
-app.setErrorHandler(globalErrorHandler);
+app.setErrorHandler(errorHandler);

@@ -1,23 +1,19 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
-import { env } from "../../config/env";
-import { AppError } from "../../core/errors/app-error";
+import { AppError } from "./app-error";
 import {
   isZodError,
   isFirebaseError,
   mapZodError,
   mapFirebaseError,
-} from "../errors/error-mapper";
+} from "./error-mapper";
 
 interface ErrorResponse {
   message: string;
   code: string;
   details?: Array<{ field?: string; message: string }>;
-  stack?: string;
 }
 
-const isProduction = env.PORT ? false : process.env.NODE_ENV === "production";
-
-export const globalErrorHandler = (
+export const errorHandler = (
   error: FastifyError | Error | unknown,
   _request: FastifyRequest,
   reply: FastifyReply,
@@ -51,10 +47,6 @@ export const globalErrorHandler = (
 
   if (appError.details && appError.details.length > 0) {
     response.details = appError.details;
-  }
-
-  if (!isProduction && error instanceof Error && error.stack) {
-    response.stack = error.stack;
   }
 
   reply.status(appError.statusCode).send(response);

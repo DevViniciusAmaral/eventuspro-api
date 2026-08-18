@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  AppError,
-  type ErrorCode,
-  type ErrorDetails,
-} from "../../core/errors/app-error";
+import { AppError, type ErrorCode, type ErrorDetails } from "./app-error";
 
 const firebaseErrorMap: Record<string, { code: ErrorCode; message: string }> = {
   "auth/invalid-email": { code: "BAD_REQUEST", message: "Email inválido." },
@@ -130,8 +126,6 @@ export const isFirebaseError = (
   return (
     code.startsWith("auth/") ||
     code.startsWith("firestore/") ||
-    code.startsWith("storage/") ||
-    code.startsWith("functions/") ||
     code in firebaseErrorMap
   );
 };

@@ -29,8 +29,8 @@ export class AppError extends Error {
     this.details = params.details;
   }
 
-  private static getHttpStatus(code: ErrorCode): number {
-    const map: Record<ErrorCode, number> = {
+  private static getHttpStatus(code: ErrorCode) {
+    return {
       BAD_REQUEST: 400,
       UNAUTHORIZED: 401,
       FORBIDDEN: 403,
@@ -38,7 +38,6 @@ export class AppError extends Error {
       CONFLICT: 409,
       UNPROCESSABLE_ENTITY: 422,
       INTERNAL_SERVER_ERROR: 500,
-    };
-    return map[code];
+    }[code];
   }
 }
