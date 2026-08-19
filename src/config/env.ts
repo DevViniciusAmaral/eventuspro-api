@@ -7,6 +7,8 @@ const envSchema = z.object({
   FIREBASE_CLIENT_EMAIL: z.string(),
   FIREBASE_PRIVATE_KEY: z.string(),
   TMDB_API_KEY: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
+  FRONTEND_URL: z.string(),
 });
 
 const safeEnv = envSchema.safeParse(process.env);
