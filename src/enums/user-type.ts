@@ -1,5 +1,5 @@
 export enum UserType {
-  ORIGANIZER = "organizer",
+  ORGANIZER = "organizer",
   CLIENT = "client",
   DOORMAN = "doorman",
 }

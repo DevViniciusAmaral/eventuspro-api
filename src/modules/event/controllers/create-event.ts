@@ -13,7 +13,7 @@ export const createEventController = async (
 ) => {
   const user = request.userData;
 
-  if (user.type !== UserType.ORIGANIZER) {
+  if (user.type !== UserType.ORGANIZER) {
     throw new UnauthorizedError("Usuário não tem permissão para criar eventos");
   }
 

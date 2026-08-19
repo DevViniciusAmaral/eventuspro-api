@@ -18,7 +18,7 @@ export const listEventsController = async (
   }
 
   let events: Event[] = [];
-  if (user.type === UserType.ORIGANIZER) {
+  if (user.type === UserType.ORGANIZER) {
     events = await eventRepository.findMany("organizerId", user.id);
   } else {
     const tickets = await ticketRepository.findMany("clientId", user.id);
