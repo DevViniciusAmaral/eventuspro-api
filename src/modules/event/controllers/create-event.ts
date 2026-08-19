@@ -6,6 +6,7 @@ import { eventFactory } from "../event.factory";
 import { eventRepository } from "../event.repository";
 import { UserType } from "../../../enums/user-type";
 import { UnauthorizedError } from "../../../errors/unauthorized-error";
+import { generateSeats } from "../../../utils/generate-seats";
 
 export const createEventController = async (
   request: FastifyRequest,
@@ -19,7 +20,11 @@ export const createEventController = async (
 
   const body = request.body as any;
   const data = createEventSchema.parse({ organizerId: user.id, ...body });
-  const formattedEvent = eventFactory.execute(data);
+
+  const seatsPerRow = data.capacity >= 100 ? 20 : 10;
+  const seats = generateSeats(data.capacity, seatsPerRow);
+
+  const formattedEvent = eventFactory.execute({ ...data, seats });
   const createdEvent = await eventRepository.create(formattedEvent);
 
   reply
