@@ -7,9 +7,9 @@ export const createUserController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { uid, email } = request.user;
+  const { email } = request.userAuth;
   const body = request.body as any;
-  const userData = createUserSchema.parse({ uid, email, ...body });
+  const userData = createUserSchema.parse({ email, ...body });
 
   const formattedUser = userFactory.execute(userData);
   const user = await userRepository.create(formattedUser);

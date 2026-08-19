@@ -1,10 +1,9 @@
 import "fastify";
+import { User } from "../modules/user/models/user";
 
 declare module "fastify" {
   interface FastifyRequest {
-    user: {
-      uid: string;
-      email: string | undefined;
-    };
+    userAuth: { uid: string; email: string };
+    userData: User;
   }
 }
