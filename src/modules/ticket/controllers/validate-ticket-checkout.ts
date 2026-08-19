@@ -53,6 +53,7 @@ export const validateTicketCheckoutController = async (
     isValid: true,
     checkin: { hash: checkinHash, qrcode: checkinQrcode },
     share: { hash: shareHash, qrcode: shareQrcode },
+    seats: ticketData.seats.split(","),
   });
 
   const ticket = await ticketRepository.create(formattedTicket);

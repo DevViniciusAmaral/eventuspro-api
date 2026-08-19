@@ -10,6 +10,7 @@ export const ticketFactory = {
       isValid: data.isValid,
       checkin: data.checkin,
       share: data.share,
+      seats: data.seats,
     });
   },
 };

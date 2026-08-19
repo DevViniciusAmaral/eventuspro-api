@@ -5,4 +5,5 @@ export interface Ticket {
   isValid: boolean;
   checkin: { hash: string; qrcode: string };
   share: { hash: string; qrcode: string };
+  seats: string[];
 }

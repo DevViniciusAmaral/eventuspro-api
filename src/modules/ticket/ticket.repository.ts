@@ -11,6 +11,11 @@ export const ticketRepository: TicketRepository = {
     const doc = await collection.add({ ...data, createdAt: Timestamp.now() });
     return { id: doc.id };
   },
+  findOne: async (filter, value) => {
+    const snapshot = await collection.where(filter, "==", value).get();
+    if (snapshot.empty) return null;
+    return parseDateString<Ticket>(snapshot.docs[0].data() as Ticket);
+  },
   findMany: async (filter, value) => {
     const snapshot = await collection.where(filter, "==", value).get();
     if (snapshot.empty) return [];
