@@ -8,6 +8,8 @@ export const ticketFactory = {
       clientId: data.clientId,
       paymentId: data.paymentId,
       isValid: data.isValid,
+      checkin: data.checkin,
+      share: data.share,
     });
   },
 };

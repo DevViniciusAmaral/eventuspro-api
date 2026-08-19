@@ -6,6 +6,8 @@ import { ticketFactory } from "../ticket.factory";
 import { ticketRepository } from "../ticket.repository";
 import { eventRepository } from "../../event/event.repository";
 import { NotFoundError } from "../../../errors/not-found-error";
+import crypto from "node:crypto";
+import { toDataURL as qrCodeToDataURL } from "qrcode";
 
 interface TicketData {
   userId: string;
@@ -30,11 +32,27 @@ export const validateTicketCheckoutController = async (
     throw new NotFoundError("O evento não foi encontrado");
   }
 
+  const checkinToken = crypto.randomBytes(32).toString("hex");
+  const checkinHash = crypto
+    .createHash("sha256")
+    .update(checkinToken)
+    .digest("hex");
+  const checkinQrcode = await qrCodeToDataURL(checkinHash);
+
+  const shareToken = crypto.randomBytes(32).toString("hex");
+  const shareHash = crypto
+    .createHash("sha256")
+    .update(shareToken)
+    .digest("hex");
+  const shareQrcode = await qrCodeToDataURL(shareHash);
+
   const formattedTicket = ticketFactory.execute({
     eventId: ticketData.eventId,
     clientId: ticketData.userId,
     paymentId: checkout.payment_intent,
     isValid: true,
+    checkin: { hash: checkinHash, qrcode: checkinQrcode },
+    share: { hash: shareHash, qrcode: shareQrcode },
   });
 
   const ticket = await ticketRepository.create(formattedTicket);
