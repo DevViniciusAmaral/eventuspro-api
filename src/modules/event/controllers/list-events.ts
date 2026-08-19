@@ -1,38 +1,27 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Event } from "../models/event";
-import { UserType } from "../../../enums/user-type";
 import { eventRepository } from "../event.repository";
-import { UnauthorizedError } from "../../../errors/unauthorized-error";
-import { ticketRepository } from "../../ticket/ticket.repository";
+import { listEventsSchema } from "../schemas/list-events-schema";
 
 export const listEventsController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = request.userData;
-
-  if (user.type === UserType.DOORMAN) {
-    throw new UnauthorizedError(
-      "Usuário não tem permissão para listar eventos",
-    );
-  }
+  const query = listEventsSchema.parse(request.query);
 
   let events: Event[] = [];
-  if (user.type === UserType.ORGANIZER) {
-    events = await eventRepository.findMany("organizerId", user.id);
+  if (query.organizerId) {
+    events = await eventRepository.findMany("organizerId", query.organizerId);
   } else {
-    const tickets = await ticketRepository.findMany("clientId", user.id);
-
-    events = (
-      await Promise.allSettled(
-        tickets.map(({ eventId }) => eventRepository.findOne("id", eventId)),
-      )
-    )
-      .filter((event) => event.status === "fulfilled")
-      .map((event) => event.value);
+    events = await eventRepository.list();
   }
+
+  const formattedEvents = events.map((event) => {
+    const { organizerId, priceId, ...rest } = event;
+    return rest;
+  });
 
   reply
     .status(200)
-    .send({ data: events, message: "Eventos listados com sucesso" });
+    .send({ data: formattedEvents, message: "Eventos listados com sucesso" });
 };
