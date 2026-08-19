@@ -1,5 +1,4 @@
 export interface Seat {
-  letter: string;
-  number: number;
+  code: string;
   clientId?: string;
 }
