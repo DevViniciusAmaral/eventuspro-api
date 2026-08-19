@@ -1,4 +1,4 @@
-import { UserType } from "../enums/user-type";
+import { UserType } from "../../../enums/user-type";
 
 export interface User {
   name: string;
