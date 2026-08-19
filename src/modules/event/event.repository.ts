@@ -25,4 +25,14 @@ export const eventRepository: EventRepository = {
     const data = snapshot.docs[0].data();
     return parseDateString<Event>(data);
   },
+  findById: async (id) => {
+    const snapshot = await collection.doc(id).get();
+    if (!snapshot.exists) return null;
+
+    const data = snapshot.data();
+    return parseDateString<Event>(data);
+  },
+  update: async (id, data) => {
+    await collection.doc(id).update({ ...data, updatedAt: Timestamp.now() });
+  },
 };
