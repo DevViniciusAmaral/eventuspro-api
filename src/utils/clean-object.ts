@@ -1,31 +1,15 @@
-const isPlainObject = (value: unknown): value is Record<string, unknown> => {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-};
-
-const cleanValue = (value: unknown): unknown => {
+export const cleanObject = <T>(value: T): T => {
   if (Array.isArray(value)) {
-    return value
-      .map((item) => cleanValue(item))
-      .filter((item) => item !== null && item !== undefined);
+    return value.map(cleanObject) as T;
   }
 
-  if (isPlainObject(value)) {
-    return cleanObject(value);
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, value]) => value !== null && value !== undefined)
+        .map(([key, value]) => [key, cleanObject(value)]),
+    ) as T;
   }
 
   return value;
-};
-
-export const cleanObject = <T>(obj: Record<string, unknown>): T => {
-  const result: Record<string, unknown> = {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    const cleaned = cleanValue(value);
-
-    if (cleaned !== null && cleaned !== undefined) {
-      result[key] = cleaned;
-    }
-  }
-
-  return result as T;
 };
