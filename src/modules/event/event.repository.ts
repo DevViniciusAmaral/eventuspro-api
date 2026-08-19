@@ -11,6 +11,13 @@ export const eventRepository: EventRepository = {
     const doc = await collection.add({ ...data, createdAt: Timestamp.now() });
     return { id: doc.id };
   },
+  list: async () => {
+    const snapshot = await collection.get();
+    if (snapshot.empty) return [];
+
+    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    return data.map((data) => parseDateString<Event>(data));
+  },
   findMany: async (filter, value) => {
     const snapshot = await collection.where(filter, "==", value).get();
     if (snapshot.empty) return [];
