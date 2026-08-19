@@ -6,7 +6,6 @@ import { getUserMiddleware } from "../../middlewares/get-user";
 
 export const userRouter = (app: FastifyInstance) => {
   app.addHook("onRequest", authMiddleware);
-  app.addHook("preHandler", getUserMiddleware);
   app.post("/", createUserController);
-  app.get("/", findUserController);
+  app.get("/", { preHandler: getUserMiddleware }, findUserController);
 };
