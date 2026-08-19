@@ -4,11 +4,19 @@ import { authMiddleware } from "../../middlewares/auth.middleware";
 import { getUserMiddleware } from "../../middlewares/get-user";
 import { listEventsController } from "./controllers/list-events";
 import { updateEventController } from "./controllers/update-event";
+import { findEventByIdController } from "./controllers/find-event-by-id";
 
 export const eventRouter = (app: FastifyInstance) => {
-  app.addHook("onRequest", authMiddleware);
-  app.addHook("preHandler", getUserMiddleware);
-  app.post("/", createEventController);
+  app.post(
+    "/",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    createEventController,
+  );
+  app.put(
+    "/:id",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    updateEventController,
+  );
   app.get("/", listEventsController);
-  app.put("/:id", updateEventController);
+  app.get("/:id", findEventByIdController);
 };
