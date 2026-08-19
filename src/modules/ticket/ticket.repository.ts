@@ -18,4 +18,12 @@ export const ticketRepository: TicketRepository = {
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     return data.map((data) => parseDateString<Ticket>(data));
   },
+  findById: async (id) => {
+    const snapshot = await collection.doc(id).get();
+    if (!snapshot.exists) return null;
+    return parseDateString<Ticket>(snapshot.data() as Ticket);
+  },
+  delete: async (id) => {
+    await collection.doc(id).delete();
+  },
 };
