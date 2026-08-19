@@ -22,7 +22,7 @@ export const createTicketCheckoutController = async (
   const invalidSeats = body.seats.filter((code) => !seatCodes.includes(code));
   if (invalidSeats.length > 0) {
     throw new BadRequestError(
-      `Assentos ${invalidSeats.join(",")} não são inválidos`,
+      `Assentos ${invalidSeats.join(",")} são inválidos`,
     );
   }
 
