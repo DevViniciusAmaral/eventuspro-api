@@ -11,5 +11,5 @@ export const generateSeats = (capacity: number, seatsPerRow = 10) => {
     seats.push(`${row}${seat}`);
   }
 
-  return seats;
+  return seats.map((seat) => ({ code: seat }));
 };
