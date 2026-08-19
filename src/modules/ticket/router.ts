@@ -11,4 +11,6 @@ export const ticketRouter = (app: FastifyInstance) => {
   app.post("/checkout", createTicketCheckoutController);
   app.patch("/checkout/validate", validateTicketCheckoutController);
   app.patch("/cancel/:id", cancelTicketController);
+  // app.get("/:hash", findTicketByShareHashController);
+  // app.patch("/validate", validateTicketController); // Validar checkinHash
 };
