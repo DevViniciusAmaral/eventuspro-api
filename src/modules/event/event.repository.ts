@@ -15,22 +15,22 @@ export const eventRepository: EventRepository = {
     const snapshot = await collection.where(filter, "==", value).get();
     if (snapshot.empty) return [];
 
-    const data = snapshot.docs.map((doc) => doc.data());
+    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     return data.map((data) => parseDateString<Event>(data));
   },
   findOne: async (filter, value) => {
     const snapshot = await collection.where(filter, "==", value).get();
     if (snapshot.empty) return null;
 
-    const data = snapshot.docs[0].data();
-    return parseDateString<Event>(data);
+    const doc = snapshot.docs[0];
+    return parseDateString<Event>({ id: doc.id, ...doc.data() });
   },
   findById: async (id) => {
     const snapshot = await collection.doc(id).get();
     if (!snapshot.exists) return null;
 
     const data = snapshot.data();
-    return parseDateString<Event>(data);
+    return parseDateString<Event>({ id: snapshot.id, ...data });
   },
   update: async (id, data) => {
     await collection.doc(id).update({ ...data, updatedAt: Timestamp.now() });

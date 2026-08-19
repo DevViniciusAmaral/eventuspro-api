@@ -12,6 +12,7 @@ export const eventFactory = {
       capacity: data.capacity,
       price: data.price,
       seats: data.seats,
+      priceId: data.priceId,
     });
   },
 };

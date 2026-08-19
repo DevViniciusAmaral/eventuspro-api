@@ -7,5 +7,8 @@ export const createEventSchema = z.object({
   date: z.string().min(1, "A data do evento é obrigatória"),
   local: z.string().min(1, "O local do evento é obrigatório"),
   capacity: z.number().min(1, "A capacidade do evento é obrigatória"),
-  price: z.number().min(1, "O preço do evento é inválido"),
+  price: z
+    .number()
+    .int("O preço deve estar em centavos")
+    .positive("O preço deve estar em centavos"),
 });

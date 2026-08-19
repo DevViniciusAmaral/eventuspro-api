@@ -1,6 +1,7 @@
 import { Seat } from "./seat";
 
 export interface Event {
+  id: string;
   organizerId: string;
   title: string;
   description: string;
@@ -9,4 +10,5 @@ export interface Event {
   capacity: number;
   price: number;
   seats: Seat[];
+  priceId: string;
 }
