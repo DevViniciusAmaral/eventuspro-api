@@ -9,7 +9,6 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   FRONTEND_URL: z.string(),
   TMDB_API_URL: z.string(),
-  TMDB_API_KEY: z.string(),
   TMDB_ACCESS_TOKEN: z.string(),
 });
 
