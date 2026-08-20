@@ -6,4 +6,5 @@ export interface Ticket {
   checkin: { hash: string; qrcode: string };
   share: { hash: string; qrcode: string };
   seats: string[];
+  createdAt: string;
 }

@@ -28,5 +28,12 @@ export const findTicketByShareHashController = async (
       local: event.local,
     },
     isValid: ticket.isValid,
+    seats: ticket.seats,
+    createdAt: ticket.createdAt,
+    qrCode: ticket.share.qrcode,
   };
+
+  reply
+    .status(200)
+    .send({ data: formattedTicket, message: "Ingresso encontrado" });
 };

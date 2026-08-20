@@ -4,6 +4,7 @@ import { getUserMiddleware } from "../../middlewares/get-user";
 import { createTicketCheckoutController } from "./controllers/create-ticket-checkout";
 import { validateTicketCheckoutController } from "./controllers/validate-ticket-checkout";
 import { cancelTicketController } from "./controllers/cancel-ticket";
+import { findTicketByShareHashController } from "./controllers/find-ticket-by-share-hash";
 
 export const ticketRouter = (app: FastifyInstance) => {
   app.addHook("onRequest", authMiddleware);
@@ -11,6 +12,6 @@ export const ticketRouter = (app: FastifyInstance) => {
   app.post("/checkout", createTicketCheckoutController);
   app.patch("/checkout/validate", validateTicketCheckoutController);
   app.patch("/cancel/:id", cancelTicketController);
-  // app.get("/:hash", findTicketByShareHashController);
+  app.get("/share/:hash", findTicketByShareHashController);
   // app.patch("/validate", validateTicketController); // Validar checkinHash
 };
