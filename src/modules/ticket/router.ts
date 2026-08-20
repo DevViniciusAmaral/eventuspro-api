@@ -6,6 +6,7 @@ import { validateTicketCheckoutController } from "./controllers/validate-ticket-
 import { cancelTicketController } from "./controllers/cancel-ticket";
 import { findTicketByShareHashController } from "./controllers/find-ticket-by-share-hash";
 import { validateTicketController } from "./controllers/validate-ticket";
+import { listTicketsController } from "./controllers/list-tickets";
 
 export const ticketRouter = (app: FastifyInstance) => {
   app.post(
@@ -24,5 +25,10 @@ export const ticketRouter = (app: FastifyInstance) => {
     "/validate/:hash",
     { onRequest: authMiddleware, preHandler: getUserMiddleware },
     validateTicketController,
+  );
+  app.get(
+    "/",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    listTicketsController,
   );
 };
