@@ -5,4 +5,5 @@ import { appRouter } from "./router";
 export const app = Fastify();
 
 app.setErrorHandler(errorHandler);
+app.get("/health", async () => ({ status: "ok" }));
 app.register(appRouter);
