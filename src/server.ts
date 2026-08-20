@@ -10,9 +10,7 @@ const shutdown = async (signal: string) => {
   if (isShuttingDown) return;
   isShuttingDown = true;
 
-  console.log(
-    `[SHUTDOWN] Sinal ${signal} recebido, encerrando graciosamente...`,
-  );
+  console.log(`[SHUTDOWN] Sinal ${signal} recebido, encerrando o servidor...`);
 
   const forceExitTimer = setTimeout(() => {
     console.error("[SHUTDOWN] Tempo limite excedido, forçando encerramento.");
@@ -31,7 +29,7 @@ const shutdown = async (signal: string) => {
     clearTimeout(forceExitTimer);
     process.exit(0);
   } catch (error) {
-    console.error("[SHUTDOWN] Erro ao encerrar graciosamente:", error);
+    console.error("[SHUTDOWN] Erro ao encerrar o servidor:", error);
     clearTimeout(forceExitTimer);
     process.exit(1);
   }
