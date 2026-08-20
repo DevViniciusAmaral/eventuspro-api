@@ -8,11 +8,21 @@ import { findTicketByShareHashController } from "./controllers/find-ticket-by-sh
 import { validateTicketController } from "./controllers/validate-ticket";
 
 export const ticketRouter = (app: FastifyInstance) => {
-  app.addHook("onRequest", authMiddleware);
-  app.addHook("preHandler", getUserMiddleware);
-  app.post("/checkout", createTicketCheckoutController);
+  app.post(
+    "/checkout",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    createTicketCheckoutController,
+  );
   app.patch("/checkout/validate", validateTicketCheckoutController);
-  app.patch("/cancel/:id", cancelTicketController);
+  app.patch(
+    "/cancel/:id",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    cancelTicketController,
+  );
   app.get("/share/:hash", findTicketByShareHashController);
-  app.patch("/validate/:hash", validateTicketController);
+  app.patch(
+    "/validate/:hash",
+    { onRequest: authMiddleware, preHandler: getUserMiddleware },
+    validateTicketController,
+  );
 };
