@@ -1,11 +1,6 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { AppError } from "./app-error";
-import {
-  isZodError,
-  isFirebaseError,
-  mapZodError,
-  mapFirebaseError,
-} from "./error-mapper";
+import { isZodError, mapZodError } from "./error-mapper";
 
 interface ErrorResponse {
   message: string;
@@ -24,8 +19,6 @@ export const errorHandler = (
     appError = error;
   } else if (isZodError(error)) {
     appError = mapZodError(error);
-  } else if (isFirebaseError(error)) {
-    appError = mapFirebaseError(error);
   } else if (error instanceof Error) {
     console.error("[UNHANDLED_ERROR]", error);
     appError = new AppError({

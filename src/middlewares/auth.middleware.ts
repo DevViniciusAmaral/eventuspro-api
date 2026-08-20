@@ -1,12 +1,6 @@
 import { FastifyRequest } from "fastify";
-
-import { auth } from "../lib/firebase";
+import { authProvider } from "../lib/auth";
 import { UnauthorizedError } from "../errors/unauthorized-error";
-
-interface VerifyIdToken {
-  uid: string;
-  email: string;
-}
 
 export const authMiddleware = async (request: FastifyRequest) => {
   const authorization = request.headers.authorization;
@@ -21,10 +15,7 @@ export const authMiddleware = async (request: FastifyRequest) => {
     throw new UnauthorizedError("Invalid authorization header.");
   }
 
-  try {
-    const { uid, email } = (await auth.verifyIdToken(token)) as VerifyIdToken;
-    request.userAuth = { uid, email };
-  } catch {
-    throw new UnauthorizedError("Invalid or expired token.");
-  }
+  const { uid, email } = await authProvider.verifyToken(token);
+  console.log(uid, email);
+  request.userAuth = { uid, email };
 };
