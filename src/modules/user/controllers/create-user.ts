@@ -1,7 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createUserSchema } from "../schemas/create-user";
-import { userFactory } from "../user.factory";
-import { userRepository } from "../user.repository";
+import { createUserUseCase } from "../use-cases/create-user";
 
 export const createUserController = async (
   request: FastifyRequest,
@@ -9,10 +7,6 @@ export const createUserController = async (
 ) => {
   const { email } = request.userAuth;
   const body = request.body as any;
-  const userData = createUserSchema.parse({ email, ...body });
-
-  const formattedUser = userFactory.execute(userData);
-  const user = await userRepository.create(formattedUser);
-
+  const user = await createUserUseCase.execute({ email, ...body });
   reply.status(201).send({ data: user, message: "Usuário criado com sucesso" });
 };

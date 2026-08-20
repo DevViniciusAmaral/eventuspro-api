@@ -1,20 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { findEventByIdSchema } from "../schemas/find-event-by-id";
-import { eventRepository } from "../event.repository";
-import { NotFoundError } from "../../../errors/not-found-error";
+import { findEventByIdUseCase } from "../use-cases/find-event-by-id";
 
 export const findEventByIdController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { id } = findEventByIdSchema.parse(request.params);
-  const event = await eventRepository.findById(id);
-
-  if (!event) {
-    throw new NotFoundError("Evento não encontrado");
-  }
-
-  const { organizerId, priceId, ...eventData } = event;
+  const eventData = await findEventByIdUseCase.execute(request.params);
 
   reply
     .status(200)

@@ -3,7 +3,7 @@ import { Event } from "./models/event";
 
 export const eventFactory = {
   execute: (data: Record<string, any>) => {
-    return cleanObject<Event>({
+    return cleanObject<Omit<Event, "id">>({
       organizerId: data.organizerId,
       title: data.title,
       description: data.description,

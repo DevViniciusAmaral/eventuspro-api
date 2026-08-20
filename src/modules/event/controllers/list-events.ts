@@ -1,25 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { Event } from "../models/event";
-import { eventRepository } from "../event.repository";
-import { listEventsSchema } from "../schemas/list-events-schema";
+import { listEventsUseCase } from "../use-cases/list-events";
 
 export const listEventsController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const query = listEventsSchema.parse(request.query);
-
-  let events: Event[] = [];
-  if (query.organizerId) {
-    events = await eventRepository.findMany("organizerId", query.organizerId);
-  } else {
-    events = await eventRepository.list();
-  }
-
-  const formattedEvents = events.map((event) => {
-    const { organizerId, priceId, ...rest } = event;
-    return rest;
-  });
+  const formattedEvents = await listEventsUseCase.execute(request.query);
 
   reply
     .status(200)
