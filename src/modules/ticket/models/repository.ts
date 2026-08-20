@@ -6,4 +6,5 @@ export interface TicketRepository {
   findMany: (filter: string, value: string) => Promise<Ticket[]>;
   findById: (id: string) => Promise<Ticket | null>;
   delete: (id: string) => Promise<void>;
+  update: (id: string, data: Partial<Ticket>) => Promise<void>;
 }

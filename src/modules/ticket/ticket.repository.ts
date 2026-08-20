@@ -14,7 +14,9 @@ export const ticketRepository: TicketRepository = {
   findOne: async (filter, value) => {
     const snapshot = await collection.where(filter, "==", value).get();
     if (snapshot.empty) return null;
-    return parseDateString<Ticket>(snapshot.docs[0].data() as Ticket);
+
+    const doc = snapshot.docs[0];
+    return parseDateString<Ticket>({ id: doc.id, ...doc.data() });
   },
   findMany: async (filter, value) => {
     const snapshot = await collection.where(filter, "==", value).get();
@@ -27,6 +29,9 @@ export const ticketRepository: TicketRepository = {
     const snapshot = await collection.doc(id).get();
     if (!snapshot.exists) return null;
     return parseDateString<Ticket>(snapshot.data() as Ticket);
+  },
+  update: async (id, data) => {
+    await collection.doc(id).update({ ...data, updatedAt: Timestamp.now() });
   },
   delete: async (id) => {
     await collection.doc(id).delete();

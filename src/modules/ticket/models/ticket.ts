@@ -1,4 +1,5 @@
 export interface Ticket {
+  id: string;
   eventId: string;
   clientId: string;
   paymentId: string;

@@ -27,7 +27,7 @@ export const cancelTicketController = async (
   const isOrganizer =
     user.type === UserType.ORGANIZER && user.id === event.organizerId;
 
-  if (isOrganizer || ticket.clientId !== user.id) {
+  if (!isOrganizer || ticket.clientId !== user.id || !ticket.isValid) {
     throw new UnauthorizedError(
       "Você não tem permissão para cancelar este ingresso",
     );
