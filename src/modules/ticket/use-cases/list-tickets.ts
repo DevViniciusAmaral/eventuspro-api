@@ -39,6 +39,7 @@ export const listTicketsUseCase = {
         seats: ticket.seats,
         createdAt: ticket.createdAt,
         qrcode: ticket.checkin.qrcode,
+        share: ticket.share.hash,
       };
     });
   },
