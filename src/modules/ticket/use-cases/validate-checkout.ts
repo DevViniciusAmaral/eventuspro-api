@@ -31,6 +31,14 @@ export const validateTicketCheckoutUseCase = {
     }
 
     const ticketData = session.metadata as unknown as TicketData;
+    const isExists = await ticketRepository.findOne(
+      "paymentId",
+      session.paymentIntentId,
+    );
+    if (isExists) {
+      throw new ConflictError("O pagamento já foi validado");
+    }
+
     const event = await eventRepository.findById(ticketData.eventId);
     if (!event) {
       throw new NotFoundError("O evento não foi encontrado");
