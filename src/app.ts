@@ -5,7 +5,10 @@ import { appRouter } from "./router";
 
 export const app = Fastify();
 
-app.register(cors, { origin: "*" });
+app.register(cors, {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+});
 app.setErrorHandler(errorHandler);
 app.get("/health", async () => ({ status: "ok" }));
 app.register(appRouter);
