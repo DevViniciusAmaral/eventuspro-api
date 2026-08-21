@@ -31,10 +31,7 @@ export const validateTicketCheckoutUseCase = {
     }
 
     const ticketData = session.metadata as unknown as TicketData;
-    const isExists = await ticketRepository.findOne(
-      "paymentId",
-      session.paymentIntentId,
-    );
+    const isExists = await ticketRepository.findOne("sessionId", sessionId);
     if (isExists) {
       throw new ConflictError("O pagamento já foi validado");
     }
@@ -51,6 +48,7 @@ export const validateTicketCheckoutUseCase = {
       eventId: ticketData.eventId,
       clientId: ticketData.userId,
       paymentId: session.paymentIntentId,
+      sessionId,
       isValid: true,
       checkin,
       share,

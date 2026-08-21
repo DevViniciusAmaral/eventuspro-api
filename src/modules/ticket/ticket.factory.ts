@@ -7,6 +7,7 @@ export const ticketFactory = {
       eventId: data.eventId,
       clientId: data.clientId,
       paymentId: data.paymentId,
+      sessionId: data.sessionId,
       isValid: data.isValid,
       checkin: data.checkin,
       share: data.share,
